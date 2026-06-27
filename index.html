@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>5年社会 確認クイズ｜北海道・東北</title>
+<title>5年社会 確認クイズ｜北海道・東北・関東</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
@@ -77,7 +77,6 @@
     <h1>全問題 確認クイズ</h1>
     <p>全 <span id="total-count"></span> 問</p>
   </div>
-
   <div id="start-screen">
     <div class="card">
       <div class="start-note">出題範囲を選んでください（複数選択可）</div>
@@ -89,7 +88,6 @@
       <button class="btn btn-primary" onclick="startQuiz()">クイズスタート →</button>
     </div>
   </div>
-
   <div id="quiz-screen" class="hidden">
     <div class="progress-wrap">
       <div class="progress-label" id="q-label"></div>
@@ -106,7 +104,6 @@
       <button class="btn" onclick="nextQuestion()">次の問題へ →</button>
     </div>
   </div>
-
   <div id="result-screen" class="hidden">
     <div class="card">
       <div class="result-score" id="result-score"></div>
@@ -120,11 +117,8 @@
     </div>
   </div>
 </div>
-
 <script>
 const allQuestions = [
-
-  // ==================== 大問1 北海道地方 ====================
   {
     section:1, category:"大問1・問2",
     text:"製紙・パルプ工業や石油精製がさかんな北海道の都市はどれ？\nあ 室蘭　い 稚内　う 根室　え 苫小牧",
@@ -169,33 +163,24 @@ const allQuestions = [
   },
   {
     section:1, category:"大問1・問8①",
-    text:"北見市から最も遠くにある湖を地図を参考にして選びなさい。\n（北見市は北海道北東部に位置。）\nあ 阿寒湖　い 洞爺湖　う 摩周湖　え サロマ湖",
+    text:"北見市から最も遠くにある湖を選びなさい。\n（北見市は北海道北東部に位置）\nあ 阿寒湖　い 洞爺湖　う 摩周湖　え サロマ湖",
     type:"free", hints:["い（洞爺湖）","あ（阿寒湖）","う（摩周湖）","え（サロマ湖）"],
     answer:"洞爺湖", altAnswers:["い","い（洞爺湖）"],
-    explanation:"い（洞爺湖）が正解。洞爺湖は北海道西部（胆振地方）にあり、北東部の北見市から最も遠い位置にあります。\nあ（阿寒湖（あかんこ））・う（摩周湖（ましゅうこ））・え（サロマ湖）はいずれも北見市に近い道東にあります。"
+    explanation:"い（洞爺湖）が正解。洞爺湖は北海道西部（胆振地方）にあり、北東部の北見市から最も遠い位置にあります。\nあ（阿寒湖）・う（摩周湖）・え（サロマ湖）はいずれも北見市に近い道東にあります。"
   },
   {
     section:1, category:"大問1・問8②",
-    text:"北見市の漁港が冬（3月ごろまで）閉鎖される理由を、北見市が面する海の名を用いて説明しなさい。",
-    type:"text",
-    answer:"オホーツク海から流氷がやってくるから。",
-    explanation:"北見市はオホーツク海に面しており、毎冬シベリア沿岸で生まれた流氷が南下して海が覆われます。流氷が接岸している間は船が出られないため、漁港が閉鎖されます。"
+    text:"北見市の漁港が冬（3月ごろまで）閉鎖されます。その理由に使う「海の名前」を答えなさい。\n（「〇〇ーツク海から流氷がやってくるから」）",
+    type:"free", hints:["オホーツク海","日本海","太平洋","べーリング海"],
+    answer:"オホーツク海", altAnswers:["おほーつくかい","オホーツク"],
+    explanation:"オホーツク海が正解。\n（解答例）「オホーツク海から流氷がやってくるから。」\n北見市はオホーツク海に面しており、毎冬シベリア沿岸で生まれた流氷が南下して海が覆われます。流氷が接岸している間は船が出られないため、漁港が閉鎖されます。"
   },
-   {
-    section:1, category:"大問1・問8②",
-    text:"青森県で風力発電がさかんな理由を「山脈」という語句を用いて説明しなさい。",
-    type:"text",
-    answer:"青森県にある海に突き出た津軽半島や下北半島には高い山脈がなく、1年中強い風を受けることができるから。",
-    explanation:"冬にユーラシア大陸から津軽海峡を通って太平洋へ吹き抜ける季節風が非常に強く、広大で平坦な土地が広がっており、大型の風車を設置しやすい環境が整っています。"
-  },
-
-  // ==================== 大問2 東北地方 ====================
   {
     section:2, category:"大問2・問1",
     text:"石巻港がある半島はどれ？\nあ 下北半島　い 男鹿半島　う 津軽半島　え 牡鹿半島",
     type:"free", hints:["え（牡鹿半島）","あ（下北半島）","い（男鹿半島）","う（津軽半島）"],
     answer:"牡鹿半島", altAnswers:["え","え（牡鹿半島）"],
-    explanation:"え（牡鹿（おしか）半島）が正解。宮城県に位置する半島で、付け根に石巻港があります。\nあ（下北半島）は青森県東部、い（男鹿半島）は秋田県、う（津軽半島）は青森県西部にあります。"
+    explanation:"え（牡鹿半島）が正解。宮城県に位置する半島で、付け根に石巻港があります。\nあ（下北半島）は青森県東部、い（男鹿半島）は秋田県、う（津軽半島）は青森県西部にあります。"
   },
   {
     section:2, category:"大問2・問2①",
@@ -223,7 +208,7 @@ const allQuestions = [
     text:"C・Dにあてはまることばの正しい組み合わせはどれ？\n（C＝青森県で養殖収獲量2位の貝、D＝空港や高速道路そばに見られる工場）\nあ C＝かき・D＝石油化学コンビナート\nい C＝かき・D＝半導体工場\nう C＝ほたて貝・D＝石油化学コンビナート\nえ C＝ほたて貝・D＝半導体工場",
     type:"free", hints:["え（ほたて貝・半導体工場）","い（かき・半導体工場）","う（ほたて貝・コンビナート）","あ（かき・コンビナート）"],
     answer:"え", altAnswers:["え（ほたて貝・半導体工場）"],
-    explanation:"えが正解。\nC→ほたて貝：青森県はほたて貝の養殖が盛んです（全国2位）。\nD→半導体工場：航空機や陸路で輸送しやすい内陸の高速道路・空港周辺に半導体工場が立地しています。石油化学コンビナートは原油を輸入する臨海部に置かれます。"
+    explanation:"えが正解。\nC→ほたて貝：青森県はほたて貝の養殖が盛んです（全国2位）。\nD→半導体工場：内陸の高速道路・空港周辺に立地しています。石油化学コンビナートは原油を輸入する臨海部に置かれます。"
   },
   {
     section:2, category:"大問2・問4①",
@@ -244,7 +229,7 @@ const allQuestions = [
     text:"やませについての次のⅠ・Ⅱの正誤の組み合わせはどれ？\nⅠ おもに北東から吹くため、日本海側に比べて太平洋側のほうが被害が大きくなります。\nⅡ 気温が上がらないときには、田の水位を上げて稲を守ります。\nあ Ⅰ正・Ⅱ正　い Ⅰ正・Ⅱ誤　う Ⅰ誤・Ⅱ正　え Ⅰ誤・Ⅱ誤",
     type:"free", hints:["あ（Ⅰ正・Ⅱ正）","い（Ⅰ正・Ⅱ誤）","う（Ⅰ誤・Ⅱ正）","え（Ⅰ誤・Ⅱ誤）"],
     answer:"あ", altAnswers:["あ（Ⅰ正・Ⅱ正）","Ⅰ正・Ⅱ正"],
-    explanation:"あ（Ⅰ正・Ⅱ正）が正解。\nⅠ→正：やませは北東から吹く冷たく湿った風で、太平洋側に冷害をもたらします。\nⅡ→正：深水管理（たの水位を上げること）により水温を保ち、稲を冷害から守ります。"
+    explanation:"あ（Ⅰ正・Ⅱ正）が正解。\nⅠ→正：やませは北東から吹く冷たく湿った風で、太平洋側に冷害をもたらします。\nⅡ→正：深水管理（田の水位を上げること）により水温を保ち、稲を冷害から守ります。"
   },
   {
     section:2, category:"大問2・問6①",
@@ -255,7 +240,7 @@ const allQuestions = [
   },
   {
     section:2, category:"大問2・問7",
-    text:"東北地方の中で生乳の生産量が最も多い県の県庁所在地の名を漢字で答えなさい。",
+    text:"東北地方の中で生乳の生産量が最も多い県の県庁所在地の名を漢字で答えなさい。（岩手県の県庁所在地）",
     type:"free", hints:["盛岡","仙台","秋田","青森"],
     answer:"盛岡", altAnswers:["盛岡市"],
     explanation:"盛岡市（もりおかし）が正解。岩手県の県庁所在地です。"
@@ -272,14 +257,14 @@ const allQuestions = [
     text:"天童将棋駒がつくられている県を記号で答えなさい。\n（地図：あ＝青森県、い＝岩手県、う＝宮城県、え＝秋田県、お＝山形県、か＝福島県）",
     type:"free", hints:["お（山形県）","え（秋田県）","う（宮城県）","か（福島県）"],
     answer:"お", altAnswers:["お（山形県）","山形","山形県"],
-    explanation:"お（山形県）が正解。天童将棋駒（てんどうしょうぎごま）は山形県天童市で作られる伝統的工芸品です。将棋駒の生産量は全国一です。"
+    explanation:"お（山形県）が正解。天童将棋駒（てんどうしょうぎごま）は山形県天童市で作られる伝統的工芸品で、生産量は全国一です。"
   },
   {
     section:2, category:"大問2・問9",
     text:"東北新幹線が通っていない県を地図の記号で2つ答えなさい。\n（地図：あ＝青森県、い＝岩手県、う＝宮城県、え＝秋田県、お＝山形県、か＝福島県）",
     type:"free", hints:["え・お（秋田県・山形県）","あ・い","う・か","あ・え"],
-    answer:"え・お", altAnswers:["お・え","えお","お、え"],
-    explanation:"え・お（秋田県・山形県）が正解。\n秋田新幹線と山形新幹線は東北新幹線の一部と線路を共有しますが、純粋な「東北新幹線」（新幹線規格）は通っていません。盛岡駅で秋田新幹線が、福島駅で山形新幹線が分岐します。"
+    answer:"え・お", altAnswers:["お・え","えお","お、え","え、お"],
+    explanation:"え・お（秋田県・山形県）が正解。\n秋田新幹線と山形新幹線は東北新幹線と線路を共有しますが、純粋な「東北新幹線」（新幹線規格）は通っていません。盛岡駅で秋田新幹線が、福島駅で山形新幹線が分岐します。"
   },
   {
     section:2, category:"大問2・問10",
@@ -288,70 +273,12 @@ const allQuestions = [
     answer:"中尊寺", altAnswers:["い","い（中尊寺）"],
     explanation:"中尊寺（ちゅうそんじ）が正解。岩手県平泉町にある天台宗の寺院で、金色堂が有名です。2011年に世界文化遺産に登録されました。\nあ（東大寺）は奈良県、う（法隆寺）は奈良県、え（金剛峯寺）は和歌山県にあります。"
   },
-
-  // ==================== 大問3 北海道・東北地方（表） ====================
-   {
-    section:2, category:"大問3・問1",
-    text:"北海道で世界自然遺産に登録されている、たんちょうが生息する場所は？",
-    type:"free", hints:["知床","大雪山","釧路湿原","阿寒湖"],
-    answer:"釧路湿原", altAnswers:["盛岡市"],
-    explanation:"釧路湿原には野生のたんちょうと呼ばれる鶴が生息しています。"
-  }, 
-    {
-    section:2, category:"大問3・問1",
-    text:"北海道には6〜7月頃のAや、夏から秋にかけての台風の影響をあまり受けません。Aに当てはまることばは？",
-    type:"free", hints:["大雪","乾燥","梅雨"],
-    answer:"梅雨", altAnswers:["つゆ"],
-    explanation:"北海道は梅雨の影響をあまり受けません。"
-  },
-     {
-    section:2, category:"大問3・問1",
-    text:"北海道・東北地方にある次の説明にあてはまる湖の名を答えなさい。\nドーナツ型の湖で、中央部に無人島があるカルデラ湖です。南岸に活火山をもち、この一帯は世界ジオパークに登録されています。",
-    type:"free", hints:["サロマ湖","田沢湖","洞爺湖"],
-    answer:"洞爺湖", altAnswers:["とうやこ"],
-    explanation:"洞爺湖の南岸には有珠山（うすざん）を呼ばれる活火山があります。"
-  },
-      {
-    section:2, category:"大問3・問1",
-    text:"北海道・東北地方にある次の説明にあてはまる湖の名を答えなさい。\n周囲20kmのほぼ円形の湖です。水深が約423kmで、日本一の深さをほこっています。",
-    type:"free", hints:["サロマ湖","田沢湖","洞爺湖"],
-    answer:"田沢湖", altAnswers:["たざわこ"],
-    explanation:"世界一の水深をほこるのは、バイカル湖（ロシア）水深 : 1,637mです。"
-  },
-       {
-    section:2, category:"大問3・問1",
-    text:"北海道・東北地方にある次の説明にあてはまる湖の名を答えなさい。\n日本で３番目に大きな湖で、長さ25kmほどにもおよぶ砂州（砂が堆積したところ）によって海と仕切られた湖です。\nかきやほたて貝の養殖がさかんです。",
-    type:"free", hints:["サロマ湖","田沢湖","洞爺湖"],
-    answer:"サロマ湖", altAnswers:["さろまこ"],
-    explanation:"北海道のオホーツク海側にある日本で3番目に大きい湖（汽水湖では国内最大）です。"
-  },
-    {
-    section:2, category:"大問3・問1",
-    text:"北海道が日本一の生産量をあげている農作物を答えなさい。\n北海道：79.7%　鹿児島：4.3％　長崎：3.7％　その他：12.3％",
-    type:"free", hints:["たまねぎ","てんさい","じゃがいも","だいこん"],
-    answer:"じゃがいも", altAnswers:["じゃがいも"],
-    explanation:"北海道の十勝平野はじゃがいもの生産がさかんです。"
-  }, 
-     {
-    section:2, category:"大問3・問1",
-    text:"北海道が日本一の生産量をあげている農作物を答えなさい。\n北海道：67.7%　兵庫：7.1％　佐賀：6.9％　その他：18.3％",
-    type:"free", hints:["たまねぎ","てんさい","じゃがいも","だいこん"],
-    answer:"たまねぎ", altAnswers:["たまねぎ"],
-    explanation:"北海道の十勝平野はたまねぎの生産がさかんです。"
-  }, 
- {
-    section:3, category:"大問3・問7",
-    text:"東北地方の米の生産地について、正しくない組み合わせはどれ？\nあ 庄内平野ー米代川（よねしろがわ）\nい 仙台平野ー北上川\nう 秋田平野ー雄物川（おものがわ）",
-    type:"free", hints:["あ（米代川→秋田県）","い（北上川→宮城県）","う（雄物川→秋田県）"],
-    answer:"あ", altAnswers:["あ"],
-    explanation:"あが正解。庄内平野は最上川が流れています。秋田平野の雄物川流域では「あきたこまち」、仙台平野の北上川流域では「ひとめぼれ」や「ササニシキ」という品種の米が作られています。"
-  }
   {
     section:3, category:"大問3・問7",
-    text:"新幹線とその下りの終着駅の組み合わせとして正しいものはどれ？\nあ 東北新幹線ー盛岡駅\nい 秋田新幹線ー秋田駅\nう 山形新幹線ー山形駅",
-    type:"free", hints:["あ（青森県）","い（岩手県）","う（山形県）"],
-    answer:"い", altAnswers:["い"],
-    explanation:"いが正解。東北新幹線の終着駅は新青森駅、山形新幹線の終着駅は新庄（しんじょう）駅です。"
+    text:"き（栃木県）について正しいものはどれ？\nあ 鬼怒川が流れています。\nい 日本三名園に数えられる庭園があります。\nう 市の数が日本一の都道府県です。\nえ 世界自然遺産があります。",
+    type:"free", hints:["あ（鬼怒川→栃木県）","い（三名園→茨城・岡山・石川）","う（市の数→埼玉）","え（自然遺産→栃木には文化遺産）"],
+    answer:"あ", altAnswers:["あ（鬼怒川）","鬼怒川"],
+    explanation:"あが正解。鬼怒川（きぬがわ）は栃木県（き）を流れ、茨城県で利根川に合流します。\nい→日本三名園（偕楽園・兼六園・後楽園）は茨城・石川・岡山県にある。う→市の数が日本一はう（埼玉県）。え→栃木県には日光の社寺（世界文化遺産）はあるが世界自然遺産はありません。"
   }
 ];
 
@@ -399,39 +326,31 @@ function showQuestion() {
   const q = currentQ;
   const total = shuffled.length;
   hintShown = false;
-
   document.getElementById('q-label').textContent = q.category;
   document.getElementById('q-counter').textContent = (currentIndex + 1) + ' / ' + total;
   document.getElementById('prog').style.width = (currentIndex / total * 100) + '%';
   document.getElementById('q-category').textContent = q.category;
   document.getElementById('q-text').textContent = q.text;
-
   hide('answer-area');
   const ia = document.getElementById('input-area');
-
-  if (q.type === 'text') {
-    ia.innerHTML = buildTextUI();
-  } else {
-    ia.innerHTML = buildFreeUI(q);
-    setTimeout(() => { const el = document.getElementById('ans-input'); if (el) el.focus(); }, 100);
-  }
+  ia.innerHTML = buildFreeUI(q);
+  setTimeout(() => { const el = document.getElementById('ans-input'); if (el) el.focus(); }, 100);
 }
 
 function buildFreeUI(q) {
-  const hintItems = q.hints.map(h => `<span class="hint-choice" onclick="fillHint('${h.replace(/\\/g,'\\\\').replace(/'/g,"\\'")}')"> ${h}</span>`).join('');
-  return `<div class="input-row">
-    <input class="ans-input" id="ans-input" type="text" placeholder="ここに答えを入力…" autocomplete="off" onkeydown="if(event.key==='Enter')submitAnswer()" />
-    <button class="btn btn-primary btn-sm" onclick="submitAnswer()">答える</button>
-  </div>
-  <button class="hint-toggle" onclick="toggleHint()">💡 ヒント（選択肢）を見る</button>
-  <div id="hint-box" class="hint-box hidden">
-    <div class="hint-label">ヒント：選択肢</div>
-    <div class="hint-choices">${hintItems}</div>
-  </div>`;
-}
-
-function buildTextUI() {
-  return `<button class="btn" onclick="showTextAnswer()">答えを見る →</button>`;
+  const hintItems = q.hints.map(h => {
+    const esc = h.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    return '<span class="hint-choice" onclick="fillHint(\'' + esc + '\')">' + h + '</span>';
+  }).join('');
+  return '<div class="input-row">'
+    + '<input class="ans-input" id="ans-input" type="text" placeholder="ここに答えを入力…" autocomplete="off" onkeydown="if(event.key===\'Enter\')submitAnswer()" />'
+    + '<button class="btn btn-primary btn-sm" onclick="submitAnswer()">答える</button>'
+    + '</div>'
+    + '<button class="hint-toggle" onclick="toggleHint()">💡 ヒント（選択肢）を見る</button>'
+    + '<div id="hint-box" class="hint-box hidden">'
+    + '<div class="hint-label">ヒント：選択肢</div>'
+    + '<div class="hint-choices">' + hintItems + '</div>'
+    + '</div>';
 }
 
 function toggleHint() {
@@ -470,25 +389,17 @@ function submitAnswer() {
   showAnswerBox(isCorrect, q, userAns);
 }
 
-function showTextAnswer() {
-  const q = currentQ;
-  document.getElementById('input-area').innerHTML = '';
-  show('answer-area');
-  const ab = document.getElementById('answer-box');
-  ab.className = 'answer-box neutral';
-  ab.innerHTML = `<div class="mark">📝 模範解答</div><div class="correct-ans">${q.answer}</div><div class="exp">${q.explanation}</div>`;
-  results.push({ q, correct: null });
-}
-
-function showAnswerBox(isCorrect, q, userAns) {
+function showAnswerBox(isCorrect, q) {
   document.getElementById('input-area').innerHTML = '';
   show('answer-area');
   if (isCorrect) score++;
   const ab = document.getElementById('answer-box');
   ab.className = 'answer-box ' + (isCorrect ? 'correct' : 'wrong');
-  const ansText = q.answer;
   const hintPenalty = hintShown && isCorrect ? '<div style="font-size:12px;margin-top:4px;opacity:0.7;">（ヒントあり）</div>' : '';
-  ab.innerHTML = `<div class="mark">${isCorrect ? '◯ 正解！' : '✕ 不正解'}</div>${hintPenalty}<div class="correct-ans">正解：${ansText}</div><div class="exp">${q.explanation}</div>`;
+  ab.innerHTML = '<div class="mark">' + (isCorrect ? '◯ 正解！' : '✕ 不正解') + '</div>'
+    + hintPenalty
+    + '<div class="correct-ans">正解：' + q.answer + '</div>'
+    + '<div class="exp">' + q.explanation.replace(/\n/g,'<br>') + '</div>';
   results.push({ q, correct: isCorrect });
 }
 
@@ -503,22 +414,19 @@ function showResult() {
   const wrongCount = results.filter(r => r.correct === false).length;
   const retryBtn = document.getElementById('retry-wrong-btn');
   if (wrongCount === 0) retryBtn.style.display = 'none';
-  else retryBtn.textContent = `まちがえた ${wrongCount} 問だけもう一度 →`;
-
-  const judged = results.filter(r => r.correct !== null);
-  const sc = judged.filter(r => r.correct).length;
-  document.getElementById('result-score').textContent = sc + ' / ' + judged.length + ' 問正解';
-
-  const pct = judged.length > 0 ? Math.round(sc / judged.length * 100) : 0;
+  else retryBtn.textContent = 'まちがえた ' + wrongCount + ' 問だけもう一度 →';
+  const sc = results.filter(r => r.correct).length;
+  document.getElementById('result-score').textContent = sc + ' / ' + results.length + ' 問正解';
+  const pct = results.length > 0 ? Math.round(sc / results.length * 100) : 0;
   document.getElementById('result-msg').textContent =
     pct >= 80 ? '🎉 すばらしい！よく復習できています' :
     pct >= 50 ? 'もう少し！もう一度チャレンジしてみよう' :
     'もう一度しっかり復習しよう！';
-
   document.getElementById('result-detail').innerHTML = results.map(r => {
-    const icon = r.correct === null ? '📝' : r.correct ? '◯' : '✕';
-    const cls = r.correct === null ? 'memo' : r.correct ? 'ok' : 'ng';
-    return `<div class="result-item"><span class="icon ${cls}">${icon}</span><span class="detail">${r.q.category}：${r.q.text.slice(0, 30)}…</span></div>`;
+    const icon = r.correct ? '◯' : '✕';
+    const cls = r.correct ? 'ok' : 'ng';
+    return '<div class="result-item"><span class="icon ' + cls + '">' + icon + '</span>'
+      + '<span class="detail">' + r.q.category + '：' + r.q.text.slice(0, 30) + '…</span></div>';
   }).join('');
 }
 
