@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>5年社会 確認クイズ｜北海道・東北・関東</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #f9f8f5; --surface: #ffffff; --surface2: #f2f1ee;
+    --border: rgba(0,0,0,0.10); --border2: rgba(0,0,0,0.18);
+    --text: #1a1a18; --text2: #6b6b67; --text3: #9b9b97;
+    --green-bg: #eaf3de; --green-text: #27500a; --green-border: #97c459;
+    --red-bg: #fcebeb; --red-text: #791f1f; --red-border: #f09595;
+    --yellow-bg: #faeeda; --yellow-text: #633806; --yellow-border: #efcc7a;
+    --accent: #1a1a18; --radius-sm: 8px; --radius-md: 12px; --radius-lg: 16px;
+  }
+  body { font-family: 'Hiragino Sans','Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; display: flex; align-items: flex-start; justify-content: center; padding: 2rem 1rem; }
+  .container { width: 100%; max-width: 580px; }
+  .header { text-align: center; margin-bottom: 2rem; }
+  .header .tag { display: inline-block; font-size: 13px; letter-spacing: 0.08em; color: var(--text2); border: 0.5px solid var(--border2); border-radius: 20px; padding: 4px 12px; margin-bottom: 12px; }
+  .header h1 { font-size: 28px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 6px; }
+  .header p { font-size: 15px; color: var(--text2); }
+  .card { background: var(--surface); border: 0.5px solid var(--border); border-radius: var(--radius-lg); padding: 1.5rem; margin-bottom: 1rem; }
+  .section-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.25rem; }
+  .section-btn { background: var(--surface2); border: 0.5px solid var(--border2); border-radius: var(--radius-sm); padding: 8px 14px; font-size: 13px; font-family: inherit; cursor: pointer; color: var(--text); transition: background 0.15s; }
+  .section-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .progress-wrap { display: flex; align-items: center; gap: 10px; margin-bottom: 1.25rem; }
+  .progress-label { font-size: 13px; color: var(--text2); white-space: nowrap; }
+  .progress-bar-bg { flex: 1; height: 3px; background: var(--border); border-radius: 4px; overflow: hidden; }
+  .progress-bar-fill { height: 100%; background: var(--accent); border-radius: 4px; transition: width 0.4s ease; }
+  .q-category { font-size: 12px; color: var(--text3); letter-spacing: 0.05em; margin-bottom: 10px; }
+  .q-text { font-size: 16px; line-height: 1.8; color: var(--text); white-space: pre-line; }
+  .input-row { display: flex; gap: 8px; margin-bottom: 10px; }
+  .ans-input { flex: 1; padding: 12px 14px; font-size: 16px; font-family: inherit; border: 0.5px solid var(--border2); border-radius: var(--radius-sm); background: var(--surface); color: var(--text); outline: none; transition: border-color 0.15s; }
+  .ans-input:focus { border-color: var(--accent); }
+  .ans-input:disabled { background: var(--surface2); }
+  .btn { display: block; width: 100%; padding: 13px; font-size: 15px; font-family: inherit; font-weight: 500; text-align: center; background: var(--surface); border: 0.5px solid var(--border2); border-radius: var(--radius-md); cursor: pointer; color: var(--text); transition: background 0.15s; }
+  .btn:hover { background: var(--surface2); }
+  .btn:disabled { opacity: 0.4; cursor: default; }
+  .btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .btn-primary:hover { background: #333; }
+  .btn-sm { padding: 10px 16px; font-size: 14px; width: auto; display: inline-block; }
+  .hint-toggle { padding: 8px 14px; font-size: 13px; font-family: inherit; background: var(--yellow-bg); border: 0.5px solid var(--yellow-border); border-radius: var(--radius-sm); cursor: pointer; color: var(--yellow-text); margin-bottom: 10px; transition: background 0.15s; }
+  .hint-toggle:hover { background: #f5dfa8; }
+  .hint-box { background: var(--yellow-bg); border: 0.5px solid var(--yellow-border); border-radius: var(--radius-sm); padding: 10px 14px; margin-bottom: 10px; }
+  .hint-box .hint-label { font-size: 11px; color: var(--yellow-text); font-weight: 600; margin-bottom: 8px; letter-spacing: 0.05em; }
+  .hint-choices { display: flex; flex-wrap: wrap; gap: 6px; }
+  .hint-choice { padding: 5px 12px; background: var(--surface); border: 0.5px solid var(--yellow-border); border-radius: 20px; font-size: 14px; cursor: pointer; color: var(--yellow-text); transition: background 0.15s; }
+  .hint-choice:hover { background: var(--yellow-border); }
+  .answer-box { border-radius: var(--radius-sm); padding: 1rem 1.25rem; font-size: 14px; line-height: 1.7; margin-bottom: 10px; }
+  .answer-box.correct { background: var(--green-bg); border: 0.5px solid var(--green-border); color: var(--green-text); }
+  .answer-box.wrong { background: var(--red-bg); border: 0.5px solid var(--red-border); color: var(--red-text); }
+  .answer-box.neutral { background: var(--surface2); border: 0.5px solid var(--border); color: var(--text); }
+  .answer-box .mark { font-weight: 600; margin-bottom: 6px; font-size: 15px; }
+  .answer-box .correct-ans { font-weight: 500; margin-bottom: 8px; }
+  .answer-box .exp { font-size: 13px; opacity: 0.85; white-space: pre-line; }
+  .result-score { font-size: 48px; font-weight: 600; letter-spacing: -0.03em; margin-bottom: 6px; text-align: center; }
+  .result-msg { font-size: 16px; color: var(--text2); text-align: center; margin-bottom: 1.5rem; }
+  .result-list { display: flex; flex-direction: column; margin-bottom: 1.5rem; }
+  .result-item { display: flex; align-items: flex-start; gap: 10px; padding: 10px 0; border-bottom: 0.5px solid var(--border); font-size: 13px; }
+  .result-item .icon { font-weight: 600; min-width: 18px; font-size: 15px; }
+  .result-item .icon.ok { color: var(--green-text); }
+  .result-item .icon.ng { color: var(--red-text); }
+  .result-item .icon.memo { color: var(--text2); }
+  .result-item .detail { color: var(--text2); line-height: 1.5; }
+  .action-row { display: flex; gap: 8px; margin-bottom: 10px; }
+  .action-row .btn { flex: 1; }
+  .hidden { display: none !important; }
+  .start-note { font-size: 12px; color: var(--text3); margin-bottom: 1.25rem; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="tag">5年社会 2025.6.21</div>
+    <h1>全問題 確認クイズ</h1>
+    <p>全 <span id="total-count"></span> 問</p>
+  </div>
+
+  <div id="start-screen">
+    <div class="card">
+      <div class="start-note">出題範囲を選んでください（複数選択可）</div>
+      <div class="section-row">
+        <button class="section-btn active" data-section="1" onclick="toggleSection(this)">大問1 北海道地方</button>
+        <button class="section-btn active" data-section="2" onclick="toggleSection(this)">大問2 東北地方</button>
+        <button class="section-btn active" data-section="3" onclick="toggleSection(this)">大問3 関東地方（表）</button>
+      </div>
+      <button class="btn btn-primary" onclick="startQuiz()">クイズスタート →</button>
+    </div>
+  </div>
+
+  <div id="quiz-screen" class="hidden">
+    <div class="progress-wrap">
+      <div class="progress-label" id="q-label"></div>
+      <div class="progress-bar-bg"><div class="progress-bar-fill" id="prog"></div></div>
+      <div class="progress-label" id="q-counter"></div>
+    </div>
+    <div class="card">
+      <div class="q-category" id="q-category"></div>
+      <div class="q-text" id="q-text"></div>
+    </div>
+    <div id="input-area"></div>
+    <div id="answer-area" class="hidden">
+      <div id="answer-box" class="answer-box"></div>
+      <button class="btn" onclick="nextQuestion()">次の問題へ →</button>
+    </div>
+  </div>
+
+  <div id="result-screen" class="hidden">
+    <div class="card">
+      <div class="result-score" id="result-score"></div>
+      <div class="result-msg" id="result-msg"></div>
+      <div class="result-list" id="result-detail"></div>
+      <button class="btn btn-primary" style="margin-bottom:8px;" onclick="retryWrong()" id="retry-wrong-btn">まちがえた問題だけもう一度 →</button>
+      <div class="action-row">
+        <button class="btn" onclick="restartQuiz()">全問もう一度</button>
+        <button class="btn" onclick="goHome()">トップへ</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const allQuestions = [
+
+  // ==================== 大問1 北海道地方 ====================
+  {
+    section:1, category:"大問1・問1①",
+    text:"北海道で人口が最も多い都市（2023年・人口約196万人）の名を漢字で答えなさい。",
+    type:"free", hints:["札幌","旭川","函館","帯広"],
+    answer:"札幌", altAnswers:["札幌市"],
+    explanation:"札幌市（さっぽろし）が正解。北海道の道庁所在地で、北海道最大の都市です。"
+  },
+  {
+    section:1, category:"大問1・問1②",
+    text:"札幌市の位置を地図のあ〜うから選びなさい。\n（あ＝稚内市周辺・北部、い＝石狩平野中央部、う＝千歳市周辺・南部）",
+    type:"free", hints:["い（石狩平野中央部）","あ（北部）","う（南部）"],
+    answer:"い", altAnswers:["い（石狩平野中央部）"],
+    explanation:"い（石狩平野中央部）が正解。札幌市は石狩平野のほぼ中央に位置しています。あは稚内市付近（最北端）、うは千歳市付近です。"
+  },
+  {
+    section:1, category:"大問1・問2",
+    text:"製紙・パルプ工業や石油精製がさかんな北海道4位の都市（B市）はどれ？\nあ 室蘭　い 稚内　う 根室　え 苫小牧",
+    type:"free", hints:["え（苫小牧）","あ（室蘭）","い（稚内）","う（根室）"],
+    answer:"苫小牧", altAnswers:["え","え（苫小牧）","苫小牧市"],
+    explanation:"苫小牧市（とまこまいし）が正解。北海道南西部の太平洋岸にあり、製紙・パルプ工業や石油精製がさかんな工業都市です。"
+  },
+  {
+    section:1, category:"大問1・問3",
+    text:"旭川市が位置する盆地の名を漢字で答えなさい。（上＋川＋盆地、6字）",
+    type:"free", hints:["上川盆地","石狩平野","十勝平野","根釧台地"],
+    answer:"上川盆地", altAnswers:["上川"],
+    explanation:"上川盆地（かみかわぼんち）が正解。北海道中央部に広がる盆地で、旭川市はここに位置しています。"
+  },
+  {
+    section:1, category:"大問1・問4",
+    text:"北海道新幹線が通過する、北海道と本州の間につくられた海底トンネルの名を答えなさい。（青＋函＋トンネル）",
+    type:"free", hints:["青函トンネル","関門トンネル","東京湾アクアライン"],
+    answer:"青函トンネル", altAnswers:["青函"],
+    explanation:"青函トンネル（せいかんトンネル）が正解。北海道と青森県を結ぶ海底トンネルで、全長約54kmは日本最長。北海道新幹線が通っています。"
+  },
+  {
+    section:1, category:"大問1・問5①",
+    text:"帯広市が位置する平野の名を漢字で答えなさい。",
+    type:"free", hints:["十勝平野","石狩平野","上川盆地","根釧台地"],
+    answer:"十勝平野", altAnswers:["十勝"],
+    explanation:"十勝平野（とかちへいや）が正解。北海道東部に広がる広大な畑作地帯で、帯広市があります。"
+  },
+  {
+    section:1, category:"大問1・問5②",
+    text:"十勝平野でさかんにつくられている作物として正しくないものはどれ？\nあ 米　い 小麦　う てんさい　え じゃがいも",
+    type:"free", hints:["あ（米）","い（小麦）","う（てんさい）","え（じゃがいも）"],
+    answer:"あ", altAnswers:["あ（米）","米"],
+    explanation:"あ（米）が正解（正しくないもの）。十勝平野は畑作がさかんで、小麦・てんさい・じゃがいも・豆類などをつくります。稲作はほとんど行われていません。"
+  },
+  {
+    section:1, category:"大問1・問6①",
+    text:"釧路湿原が登録されている、水鳥の生息地として重要な湿地を保護する条約の名をカタカナで答えなさい。",
+    type:"free", hints:["ラムサール","ワシントン","ボン","バーゼル"],
+    answer:"ラムサール", altAnswers:["ラムサール条約"],
+    explanation:"ラムサール条約（ラムサールじょうやく）が正解。1971年にイランのラムサールで採択された国際条約で、釧路湿原はその登録地の1つです。"
+  },
+  {
+    section:1, category:"大問1・問6②",
+    text:"北海道に移住してきた人々をまとめる〔C〕使という役所がおかれ、本格的に〔C〕が進められました。Cにあてはまることばを漢字2字で答えなさい。",
+    type:"free", hints:["開拓","移住","開発","入植"],
+    answer:"開拓", altAnswers:["かいたく"],
+    explanation:"開拓（かいたく）が正解。明治時代に開拓使という役所が置かれ、本州などから多くの人々が移住しました。「鳥取」などの地名はその移住者の出身地に由来しています。"
+  },
+  {
+    section:1, category:"大問1・問7",
+    text:"江別市を流れる、流域面積が日本で2番目に大きな川の名を漢字で答えなさい。",
+    type:"free", hints:["石狩川","利根川","信濃川","天竜川"],
+    answer:"石狩川", altAnswers:["石狩"],
+    explanation:"石狩川（いしかりがわ）が正解。大雪山付近を源流に石狩平野を流れ、日本海に注ぎます。流域面積は利根川（日本一）に次いで全国2位です。"
+  },
+  {
+    section:1, category:"大問1・問8①",
+    text:"北見市から最も遠くにある湖を地図を参考にして選びなさい。\n（北見市は北海道北東部に位置。）\nあ 阿寒湖　い 洞爺湖　う 摩周湖　え サロマ湖",
+    type:"free", hints:["い（洞爺湖）","あ（阿寒湖）","う（摩周湖）","え（サロマ湖）"],
+    answer:"洞爺湖", altAnswers:["い","い（洞爺湖）"],
+    explanation:"い（洞爺湖）が正解。洞爺湖は北海道西部（胆振地方）にあり、北東部の北見市から最も遠い位置にあります。\nあ（阿寒湖）・う（摩周湖）・え（サロマ湖）はいずれも北見市に近い道東にあります。"
+  },
+  {
+    section:1, category:"大問1・問8②",
+    text:"北見市の漁港が冬（3月ごろまで）閉鎖される理由を、北見市が面する海の名を用いて説明しなさい。",
+    type:"text",
+    answer:"オホーツク海から流氷がやってくるから。",
+    explanation:"北見市はオホーツク海に面しており、毎冬シベリア沿岸で生まれた流氷が南下して海が覆われます。流氷が接岸している間は船が出られないため、漁港が閉鎖されます。"
+  },
+  {
+    section:1, category:"大問1・問9",
+    text:"北海道の先住民族〔D〕のことばがもとになっている都市名が表に含まれています。Dにあてはまることばをカタカナで答えなさい。",
+    type:"free", hints:["アイヌ","ヤマト","シサム","ウタリ"],
+    answer:"アイヌ", altAnswers:["あいぬ"],
+    explanation:"アイヌが正解。アイヌ民族は北海道の先住民族で、その言語（アイヌ語）が地名の由来となっている都市が多くあります。例えば「札幌」（サッ・ポロ＝乾いた・広い川）などです。"
+  },
+
+  // ==================== 大問2 東北地方 ====================
+  {
+    section:2, category:"大問2・問1",
+    text:"石巻港がある半島（A）はどれ？\nあ 下北半島　い 男鹿半島　う 津軽半島　え 牡鹿半島",
+    type:"free", hints:["え（牡鹿半島）","あ（下北半島）","い（男鹿半島）","う（津軽半島）"],
+    answer:"牡鹿半島", altAnswers:["え","え（牡鹿半島）"],
+    explanation:"え（牡鹿半島）が正解。宮城県に位置する半島で、付け根に石巻港があります。\nあ（下北半島）は青森県東部、い（男鹿半島）は秋田県、う（津軽半島）は青森県西部にあります。"
+  },
+  {
+    section:2, category:"大問2・問2①",
+    text:"青森県東部にある、水揚げ量が日本有数の漁港〔B〕の名を漢字で答えなさい。",
+    type:"free", hints:["八戸","青森","大間","久慈"],
+    answer:"八戸", altAnswers:["八戸港"],
+    explanation:"八戸港（はちのへこう）が正解。青森県南東部に位置し、さばやいかなどの水揚げが多い漁港です。"
+  },
+  {
+    section:2, category:"大問2・問2②",
+    text:"東北地方を指して昔から〔E〕とよばれてきました。Eにあてはまることばをひらがな4字で答えなさい。",
+    type:"free", hints:["みちのく","ほくとう","とうほく","おうう"],
+    answer:"みちのく", altAnswers:["みちのく（陸奥）","陸奥"],
+    explanation:"みちのく（陸奥）が正解。東北地方は古くから都から遠く離れた地として「みちのく」とよばれてきました。"
+  },
+  {
+    section:2, category:"大問2・問2③",
+    text:"東北三大祭りのうち、ねぶた・七夕ともう1つ〔F〕の祭りの名を答えなさい。（秋田県の祭り）",
+    type:"free", hints:["竿燈","花笠","さんさ踊り","わんこそば"],
+    answer:"竿燈", altAnswers:["かんとう","竿燈まつり","竿灯"],
+    explanation:"竿燈（かんとう）が正解。秋田市で毎年8月に行われる祭りで、稲穂に見立てた竿燈を高く掲げます。東北三大祭りは青森のねぶた・秋田の竿燈・仙台の七夕です。"
+  },
+  {
+    section:2, category:"大問2・問3",
+    text:"C・Dにあてはまることばの正しい組み合わせはどれ？\n（C＝青森県で養殖収獲量2位の貝、D＝空港や高速道路そばに見られる工場）\nあ C＝かき・D＝石油化学コンビナート\nい C＝かき・D＝半導体工場\nう C＝ほたて貝・D＝石油化学コンビナート\nえ C＝ほたて貝・D＝半導体工場",
+    type:"free", hints:["え（ほたて貝・半導体工場）","い（かき・半導体工場）","う（ほたて貝・コンビナート）","あ（かき・コンビナート）"],
+    answer:"え", altAnswers:["え（ほたて貝・半導体工場）"],
+    explanation:"えが正解。\nC→ほたて貝：青森県はほたて貝の養殖が盛んです（全国2位）。\nD→半導体工場：航空機や陸路で輸送しやすい内陸の高速道路・空港周辺に半導体工場が立地しています。石油化学コンビナートは原油を輸入する臨海部に置かれます。"
+  },
+  {
+    section:2, category:"大問2・問4①",
+    text:"東北地方の米の生産量（2023年）は、全国のどのくらいをしめていますか。最も近いものはどれ？\nあ 約8%　い 約15%　う 約25%　え 約33%",
+    type:"free", hints:["う（約25%）","え（約33%）","い（約15%）","あ（約8%）"],
+    answer:"う", altAnswers:["う（約25%）","25%","約25%"],
+    explanation:"う（約25%）が正解。東北地方は「日本の穀倉地帯」ともよばれ、米の生産量が全国の約4分の1をしめています。"
+  },
+  {
+    section:2, category:"大問2・問4②",
+    text:"東北地方を流れる三大急流（最上川など）の河口に広がる、稲作がさかんな平野の名を漢字で答えなさい。",
+    type:"free", hints:["庄内平野","仙台平野","秋田平野","津軽平野"],
+    answer:"庄内平野", altAnswers:["庄内"],
+    explanation:"庄内平野（しょうないへいや）が正解。山形県西部に広がる平野で、最上川の河口に位置します。良質な米どころとして知られています。"
+  },
+  {
+    section:2, category:"大問2・問5",
+    text:"やませについての次のⅠ・Ⅱの正誤の組み合わせはどれ？\nⅠ おもに北東から吹くため、日本海側に比べて太平洋側のほうが被害が大きくなります。\nⅡ 気温が上がらないときには、田の水位を上げて稲を守ります。\nあ Ⅰ正・Ⅱ正　い Ⅰ正・Ⅱ誤　う Ⅰ誤・Ⅱ正　え Ⅰ誤・Ⅱ誤",
+    type:"free", hints:["あ（Ⅰ正・Ⅱ正）","い（Ⅰ正・Ⅱ誤）","う（Ⅰ誤・Ⅱ正）","え（Ⅰ誤・Ⅱ誤）"],
+    answer:"あ", altAnswers:["あ（Ⅰ正・Ⅱ正）","Ⅰ正・Ⅱ正"],
+    explanation:"あ（Ⅰ正・Ⅱ正）が正解。\nⅠ→正：やませは北東から吹く冷たく湿った風で、太平洋側に冷害をもたらします。\nⅡ→正：深水管理（たの水位を上げること）により水温を保ち、稲を冷害から守ります。"
+  },
+  {
+    section:2, category:"大問2・問6①",
+    text:"「さくらんぼ・もも・おうとう（さくらんぼ）・りんご」のうち、東北地方の県の生産量が全国１位でないくだものを番号（②〜⑤）で答えなさい。\n②さくらんぼ　③もも　④おうとう　⑤りんご",
+    type:"free", hints:["③（もも）","②（さくらんぼ）","④（おうとう）","⑤（りんご）"],
+    answer:"③", altAnswers:["③（もも）","もも","3"],
+    explanation:"③（もも）が正解。もも（桃）の生産量全国1位は山梨県で、東北地方の県ではありません。\n②さくらんぼ・④おうとう→山形県が全国1位。⑤りんご→青森県が全国1位です。"
+  },
+  {
+    section:2, category:"大問2・問6②",
+    text:"前の問いで選んだ「もも」について、東北地方の中で生産量が最も多い県の名を漢字で答えなさい。",
+    type:"free", hints:["福島県","山形県","宮城県","岩手県"],
+    answer:"福島県", altAnswers:["福島"],
+    explanation:"福島県が正解。福島県は全国2位のもも生産量を誇ります（全国1位は山梨県）。"
+  },
+  {
+    section:2, category:"大問2・問7",
+    text:"東北地方の中で生乳の生産量が最も多い岩手県の県庁所在地の名を漢字で答えなさい。",
+    type:"free", hints:["盛岡","仙台","秋田","青森"],
+    answer:"盛岡", altAnswers:["盛岡市"],
+    explanation:"盛岡市（もりおかし）が正解。岩手県の県庁所在地です。"
+  },
+  {
+    section:2, category:"大問2・問8①",
+    text:"南部鉄器がつくられている県を地図の記号で答えなさい。\n（地図：あ＝青森県、い＝岩手県、う＝宮城県、え＝秋田県、お＝山形県、か＝福島県）",
+    type:"free", hints:["い（岩手県）","あ（青森県）","う（宮城県）","え（秋田県）"],
+    answer:"い", altAnswers:["い（岩手県）","岩手","岩手県"],
+    explanation:"い（岩手県）が正解。南部鉄器（なんぶてっき）は岩手県の奥州市や盛岡市で作られる伝統的工芸品です。"
+  },
+  {
+    section:2, category:"大問2・問8②",
+    text:"天童将棋駒がつくられている県を地図の記号で答えなさい。\n（地図：あ＝青森県、い＝岩手県、う＝宮城県、え＝秋田県、お＝山形県、か＝福島県）",
+    type:"free", hints:["お（山形県）","え（秋田県）","う（宮城県）","か（福島県）"],
+    answer:"お", altAnswers:["お（山形県）","山形","山形県"],
+    explanation:"お（山形県）が正解。天童将棋駒（てんどうしょうぎごま）は山形県天童市で作られる伝統的工芸品です。将棋駒の生産量は全国一です。"
+  },
+  {
+    section:2, category:"大問2・問9",
+    text:"東北新幹線が通っていない県を地図の記号で2つ答えなさい。\n（地図：あ＝青森県、い＝岩手県、う＝宮城県、え＝秋田県、お＝山形県、か＝福島県）",
+    type:"free", hints:["え・お（秋田県・山形県）","あ・い","う・か","あ・え"],
+    answer:"え・お", altAnswers:["お・え","え、お","お、え"],
+    explanation:"え・お（秋田県・山形県）が正解。\n秋田新幹線と山形新幹線は東北新幹線の一部と線路を共有しますが、純粋な「東北新幹線」（新幹線規格）は通っていません。盛岡駅で秋田新幹線が、福島駅で山形新幹線が分岐します。"
+  },
+  {
+    section:2, category:"大問2・問10",
+    text:"平泉町にある〔G〕は、世界文化遺産「平泉」として登録されています。Gにあてはまる建造物はどれ？\nあ 東大寺　い 中尊寺　う 法隆寺　え 金剛峯寺",
+    type:"free", hints:["い（中尊寺）","あ（東大寺）","う（法隆寺）","え（金剛峯寺）"],
+    answer:"中尊寺", altAnswers:["い","い（中尊寺）"],
+    explanation:"中尊寺（ちゅうそんじ）が正解。岩手県平泉町にある天台宗の寺院で、金色堂が有名です。2011年に世界文化遺産に登録されました。\nあ（東大寺）は奈良県、う（法隆寺）は奈良県、え（金剛峯寺）は和歌山県にあります。"
+  },
+
+  // ==================== 大問3 関東地方（表） ====================
+  // あ=東京都 い=神奈川県 う=埼玉県 え=千葉県 お=茨城県 か=群馬県 き=栃木県
+  {
+    section:3, category:"大問3・問1",
+    text:"あ（東京都）で最も南に位置する島の名を答えなさい。（太平洋の日本の最南端）",
+    type:"free", hints:["沖ノ鳥島","南鳥島","小笠原諸島","伊豆大島"],
+    answer:"沖ノ鳥島", altAnswers:["おきのとりしま"],
+    explanation:"沖ノ鳥島（おきのとりしま）が正解。北緯20度付近に位置する日本最南端の島で、東京都小笠原村に属します。満潮時に水没しないよう護岸工事が行われています。"
+  },
+  {
+    section:3, category:"大問3・問2①",
+    text:"い（神奈川県）の3つの政令指定都市（横浜市・川崎市・相模原市）のうち、最も人口が多い都市の名を漢字で答えなさい。（都県庁所在地でもある）",
+    type:"free", hints:["横浜市","川崎市","相模原市"],
+    answer:"横浜", altAnswers:["横浜市"],
+    explanation:"横浜市（よこはまし）が正解。神奈川県の県庁所在地で、政令指定都市の中でも人口は東京23区に次ぐ規模を誇ります。"
+  },
+  {
+    section:3, category:"大問3・問2②",
+    text:"あ（東京都）とう（埼玉県）の昼夜間人口比率（2020年）をそれぞれ選びなさい。\nあ 87.6　い 97.6　う 119.2\n※昼夜間人口比率＝夜を100としたとき昼間の人口の割合",
+    type:"free", hints:["あ（東京都）→う（119.2）、う（埼玉県）→あ（87.6）"],
+    answer:"東京都→う（119.2）・埼玉県→あ（87.6）", altAnswers:["う・あ","東京119.2埼玉87.6","あ（東京）はう、う（埼玉）はあ"],
+    explanation:"東京都はう（119.2）、埼玉県はあ（87.6）が正解。\n東京都は昼間に多くの通勤・通学者が流入するため昼夜間人口比率が高い（119.2）。埼玉県はその逆で昼間に人口が流出するベッドタウン（87.6）。い（97.6）は茨城県です。"
+  },
+  {
+    section:3, category:"大問3・問3①",
+    text:"キャベツの生産量が日本有数のか（面積6362㎢、人口約190万人）の都県の名を漢字で答えなさい。",
+    type:"free", hints:["群馬県","栃木県","茨城県","埼玉県"],
+    answer:"群馬県", altAnswers:["群馬"],
+    explanation:"群馬県が正解。嬬恋村をはじめとする高冷地農業がさかんで、キャベツの生産量は全国トップクラスです。"
+  },
+  {
+    section:3, category:"大問3・問3②",
+    text:"関東地方の都県の農業について正しくないものはどれ？\nあ あ（東京都）の半島の付近には黒潮が流れており、温暖な気候をいかした野菜・花の栽培がさかんです。\nい い（神奈川県）には、狭山茶とよばれる茶が生産されている都市があります。\nう か（群馬県）のこんにゃくいもの生産量は、全国1位となっています。\nえ き（栃木県）には低湿地が広がる水郷地帯が見られ、早場米がつくられています。",
+    type:"free", hints:["え（き＝栃木県に水郷地帯はない）","あ","い","う"],
+    answer:"え", altAnswers:["え（き＝栃木県）","え（水郷地帯の誤り）"],
+    explanation:"えが正解（正しくないもの）。水郷地帯が広がるのはお（茨城県）やえ（千葉県）で、き（栃木県）ではありません。\nあ→正：東京都の伊豆諸島付近に黒潮が流れる。い→正：神奈川県にも狭山茶の産地がある。う→正：こんにゃくいも1位は群馬県（か）。"
+  },
+  {
+    section:3, category:"大問3・問4",
+    text:"いわしの水揚げが多いことで知られる銚子港がある都県を次から選びなさい。\nあ（東京都）　い（神奈川県）　う（埼玉県）　え（千葉県）",
+    type:"free", hints:["え（千葉県）","い（神奈川県）","あ（東京都）","う（埼玉県）"],
+    answer:"え", altAnswers:["え（千葉県）","千葉","千葉県"],
+    explanation:"え（千葉県）が正解。銚子港（ちょうしこう）は千葉県銚子市にあり、いわし・さんまなどの水揚げが多い全国有数の漁港です。"
+  },
+  {
+    section:3, category:"大問3・問5①",
+    text:"あ（東京都）・う（埼玉県）に広がる工業地帯の名を漢字で答えなさい。",
+    type:"free", hints:["京浜工業地帯","京葉工業地域","阪神工業地帯","中京工業地帯"],
+    answer:"京浜工業地帯", altAnswers:["けいひんこうぎょうちたい"],
+    explanation:"京浜工業地帯（けいひんこうぎょうちたい）が正解。東京（京）と横浜（浜）を中心に広がる工業地帯で、機械工業の割合が高いです。"
+  },
+  {
+    section:3, category:"大問3・問5①（正誤）",
+    text:"京浜工業地帯について正しくないものはどれ？\nあ 工業別生産額の割合をみると、機械工業の割合が最も多くなっています。\nい 鹿島港のまわりに、重化学工業の大工場がつくられています。\nう 1990年代までは、全国の工業地帯・地域の中で工業生産額が1位でした。",
+    type:"free", hints:["い（鹿島港は京葉・鹿島臨海工業地域）","あ（機械工業1位→正しい）","う（かつて1位→正しい）"],
+    answer:"い", altAnswers:["い（鹿島港）"],
+    explanation:"いが正解（正しくないもの）。鹿島港（茨城県）周辺の重化学工業は鹿島臨海工業地域の話で、京浜工業地帯ではありません。\nあ→正：機械工業（自動車など）の割合が最高。う→正：1990年代まで全国工業生産額1位でした。"
+  },
+  {
+    section:3, category:"大問3・問5②",
+    text:"え（千葉県）に位置する工業がさかんな都市を2つ選びなさい。\nあ 太田　い 市原　う 君津　え 横須賀",
+    type:"free", hints:["い・う（市原・君津）","あ・い","う・え","い・え"],
+    answer:"い・う", altAnswers:["う・い","い、う","う、い","市原・君津","君津・市原"],
+    explanation:"い・う（市原・君津）が正解。どちらも千葉県（え）にあります。市原市は石油化学工業、君津市は鉄鋼業（製鉄所）がさかんです。\nあ（太田市）は群馬県（自動車工業）、え（横須賀市）は神奈川県（自動車・造船）にあります。"
+  },
+  {
+    section:3, category:"大問3・問6",
+    text:"う（埼玉県）には、複数の新幹線が分岐する駅があります。この駅の名を漢字で答えなさい。",
+    type:"free", hints:["大宮","上野","東京","浦和"],
+    answer:"大宮", altAnswers:["大宮駅","おおみや"],
+    explanation:"大宮駅（おおみやえき）が正解。さいたま市にあり、東北新幹線・上越新幹線・北陸新幹線が分岐します。"
+  },
+  {
+    section:3, category:"大問3・問7",
+    text:"き（栃木県）について正しいものはどれ？\nあ 鬼怒川が流れています。\nい 日本三名園に数えられる庭園があります。\nう 市の数が日本一の都道府県です。\nえ 世界自然遺産があります。",
+    type:"free", hints:["あ（鬼怒川→栃木県）","い（三名園→茨城・岡山・石川）","う（市の数→埼玉）","え（自然遺産→栃木には文化遺産）"],
+    answer:"あ", altAnswers:["あ（鬼怒川）","鬼怒川"],
+    explanation:"あが正解。鬼怒川（きぬがわ）は栃木県（き）を流れ、茨城県で利根川に合流します。\nい→日本三名園（偕楽園・兼六園・後楽園）は茨城・石川・岡山県にある。う→市の数が日本一はう（埼玉県）。え→栃木県には日光の社寺（世界文化遺産）はあるが世界自然遺産はありません。"
+  }
+];
+
+let currentIndex = 0, score = 0, results = [], shuffled = [];
+let activeSections = new Set([1, 2, 3]);
+let hintShown = false;
+let currentQ = null;
+
+function toggleSection(btn) {
+  const s = parseInt(btn.dataset.section);
+  if (activeSections.has(s)) {
+    if (activeSections.size === 1) return;
+    activeSections.delete(s); btn.classList.remove('active');
+  } else {
+    activeSections.add(s); btn.classList.add('active');
+  }
+  updateTotalCount();
+}
+
+function updateTotalCount() {
+  document.getElementById('total-count').textContent = allQuestions.filter(q => activeSections.has(q.section)).length;
+}
+
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function show(id) { document.getElementById(id).classList.remove('hidden'); }
+function hide(id) { document.getElementById(id).classList.add('hidden'); }
+
+function startQuiz() {
+  shuffled = shuffle(allQuestions.filter(q => activeSections.has(q.section)));
+  currentIndex = 0; score = 0; results = [];
+  hide('start-screen'); show('quiz-screen');
+  showQuestion();
+}
+
+function showQuestion() {
+  currentQ = shuffled[currentIndex];
+  const q = currentQ;
+  const total = shuffled.length;
+  hintShown = false;
+
+  document.getElementById('q-label').textContent = q.category;
+  document.getElementById('q-counter').textContent = (currentIndex + 1) + ' / ' + total;
+  document.getElementById('prog').style.width = (currentIndex / total * 100) + '%';
+  document.getElementById('q-category').textContent = q.category;
+  document.getElementById('q-text').textContent = q.text;
+
+  hide('answer-area');
+  const ia = document.getElementById('input-area');
+
+  if (q.type === 'text') {
+    ia.innerHTML = buildTextUI();
+  } else {
+    ia.innerHTML = buildFreeUI(q);
+    setTimeout(() => { const el = document.getElementById('ans-input'); if (el) el.focus(); }, 100);
+  }
+}
+
+function buildFreeUI(q) {
+  const hintItems = q.hints.map(h => `<span class="hint-choice" onclick="fillHint('${h.replace(/\\/g,'\\\\').replace(/'/g,"\\'")}')"> ${h}</span>`).join('');
+  return `<div class="input-row">
+    <input class="ans-input" id="ans-input" type="text" placeholder="ここに答えを入力…" autocomplete="off" onkeydown="if(event.key==='Enter')submitAnswer()" />
+    <button class="btn btn-primary btn-sm" onclick="submitAnswer()">答える</button>
+  </div>
+  <button class="hint-toggle" onclick="toggleHint()">💡 ヒント（選択肢）を見る</button>
+  <div id="hint-box" class="hint-box hidden">
+    <div class="hint-label">ヒント：選択肢</div>
+    <div class="hint-choices">${hintItems}</div>
+  </div>`;
+}
+
+function buildTextUI() {
+  return `<button class="btn" onclick="showTextAnswer()">答えを見る →</button>`;
+}
+
+function toggleHint() {
+  const box = document.getElementById('hint-box');
+  if (!box) return;
+  box.classList.toggle('hidden');
+  hintShown = true;
+}
+
+function fillHint(val) {
+  const input = document.getElementById('ans-input');
+  if (input) { input.value = val.trim(); input.focus(); }
+}
+
+function normalize(str) {
+  return str.trim().replace(/\s+/g, '').replace(/[　]/g, '').toLowerCase()
+    .replace(/[ａ-ｚＡ-Ｚ０-９]/g, c => String.fromCharCode(c.charCodeAt(0) - 0xFEE0));
+}
+
+function checkAnswer(userAns, q) {
+  const u = normalize(userAns);
+  if (u === normalize(q.answer)) return true;
+  if (q.altAnswers) {
+    for (const alt of q.altAnswers) { if (u === normalize(alt)) return true; }
+  }
+  return false;
+}
+
+function submitAnswer() {
+  const q = currentQ;
+  const input = document.getElementById('ans-input');
+  if (!input || input.value.trim() === '') return;
+  const userAns = input.value.trim();
+  input.disabled = true;
+  const isCorrect = checkAnswer(userAns, q);
+  showAnswerBox(isCorrect, q, userAns);
+}
+
+function showTextAnswer() {
+  const q = currentQ;
+  document.getElementById('input-area').innerHTML = '';
+  show('answer-area');
+  const ab = document.getElementById('answer-box');
+  ab.className = 'answer-box neutral';
+  ab.innerHTML = `<div class="mark">📝 模範解答</div><div class="correct-ans">${q.answer}</div><div class="exp">${q.explanation}</div>`;
+  results.push({ q, correct: null });
+}
+
+function showAnswerBox(isCorrect, q, userAns) {
+  document.getElementById('input-area').innerHTML = '';
+  show('answer-area');
+  if (isCorrect) score++;
+  const ab = document.getElementById('answer-box');
+  ab.className = 'answer-box ' + (isCorrect ? 'correct' : 'wrong');
+  const ansText = q.answer;
+  const hintPenalty = hintShown && isCorrect ? '<div style="font-size:12px;margin-top:4px;opacity:0.7;">（ヒントあり）</div>' : '';
+  ab.innerHTML = `<div class="mark">${isCorrect ? '◯ 正解！' : '✕ 不正解'}</div>${hintPenalty}<div class="correct-ans">正解：${ansText}</div><div class="exp">${q.explanation}</div>`;
+  results.push({ q, correct: isCorrect });
+}
+
+function nextQuestion() {
+  currentIndex++;
+  if (currentIndex >= shuffled.length) showResult();
+  else showQuestion();
+}
+
+function showResult() {
+  hide('quiz-screen'); show('result-screen');
+  const wrongCount = results.filter(r => r.correct === false).length;
+  const retryBtn = document.getElementById('retry-wrong-btn');
+  if (wrongCount === 0) retryBtn.style.display = 'none';
+  else retryBtn.textContent = `まちがえた ${wrongCount} 問だけもう一度 →`;
+
+  const judged = results.filter(r => r.correct !== null);
+  const sc = judged.filter(r => r.correct).length;
+  document.getElementById('result-score').textContent = sc + ' / ' + judged.length + ' 問正解';
+
+  const pct = judged.length > 0 ? Math.round(sc / judged.length * 100) : 0;
+  document.getElementById('result-msg').textContent =
+    pct >= 80 ? '🎉 すばらしい！よく復習できています' :
+    pct >= 50 ? 'もう少し！もう一度チャレンジしてみよう' :
+    'もう一度しっかり復習しよう！';
+
+  document.getElementById('result-detail').innerHTML = results.map(r => {
+    const icon = r.correct === null ? '📝' : r.correct ? '◯' : '✕';
+    const cls = r.correct === null ? 'memo' : r.correct ? 'ok' : 'ng';
+    return `<div class="result-item"><span class="icon ${cls}">${icon}</span><span class="detail">${r.q.category}：${r.q.text.slice(0, 30)}…</span></div>`;
+  }).join('');
+}
+
+function retryWrong() {
+  const wrong = results.filter(r => r.correct === false).map(r => r.q);
+  if (wrong.length === 0) return;
+  shuffled = shuffle(wrong);
+  currentIndex = 0; score = 0; results = [];
+  hide('result-screen'); show('quiz-screen');
+  showQuestion();
+}
+
+function restartQuiz() { hide('result-screen'); startQuiz(); }
+function goHome() { hide('result-screen'); show('start-screen'); }
+
+updateTotalCount();
+</script>
+</body>
+</html>
